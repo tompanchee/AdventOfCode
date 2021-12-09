@@ -12,60 +12,24 @@ Console.WriteLine($"Number of unique digits in results is {countOfUniques}");
 Console.WriteLine();
 
 Console.WriteLine("Solving puzzle 2...");
-/* Segment numbering:       
- 000
-5   1
-5   1
- 666
-4   2
-4   2
- 333
-
- Allowed combinations:
- 0: 0 1 2 3 4 5
- 1:   1 2
- 2: 0 1   3 4   6
- 3: 0 1 2 3     6
- 4:   1 2     5 6
- 5: 0   2 3   5 6
- 6: 0   2 3 4 5 6
- 7: 0 1 2
- 8: 0 1 2 3 4 5 6
- 9: 0 1 2 3   5 6
-*/
-
-Dictionary<int, int[]> numberSegments = new Dictionary<int, int[]>{
-    {0, new[]{0,1,2,3,4,5}},
-    {1, new[]{1,2}},
-    {2, new[]{0,1,3,4,6}},
-    {3, new[]{0,1,2,3,6}},
-    {4, new[]{1,2,5,6}},
-    {5, new[]{0,2,3,5,6}},
-    {6, new[]{0,2,3,4,5,6}},
-    {7, new[]{0,1,2}},
-    {8, new[]{0,1,2,3,4,5,6}},
-    {9, new[]{0,1,2,3,5,6}}
-};
-
 var sum = 0;
-foreach(var row in input) {
-    var segments = new string[7];
-
-    var one = string.Empty; // length: 2
-    var seven = string.Empty; // 3
-    var four = string.Empty; // 4
-    var eight = string.Empty; // 7
-    var twoThreeFive = new List<string>(); // 5
-    var zeroSixOrNine = new List<string>(); // 6
+foreach (var row in data) {
     var zero = string.Empty;
+    var one = string.Empty; // length: 2
     var two = string.Empty;
     var three = string.Empty;
+    var four = string.Empty; // 4
     var five = string.Empty;
     var six = string.Empty;
+    var seven = string.Empty; // 3
+    var eight = string.Empty; // 7
     var nine = string.Empty;
-    
-    foreach(var signal in row.signals.Select(s=>s.OrderBy(c=>c))) {
-        switch(signal.Lenght) {
+    var twoThreeFive = new List<string>(); // 5
+    var zeroSixNine = new List<string>(); // 6
+
+    foreach (var signal in row.signals.Select(s => string.Concat(s.OrderBy(c => c)))) {
+        switch (signal.Length)
+        {
             case 2:
                 one = signal;
                 break;
@@ -79,7 +43,7 @@ foreach(var row in input) {
                 twoThreeFive.Add(signal);
                 break;
             case 6:
-                zeroSixOrNine.Add(signal);
+                zeroSixNine.Add(signal);
                 break;
             case 7:
                 eight = signal;
@@ -87,22 +51,38 @@ foreach(var row in input) {
             default:
                 throw new InvalidDataException("Unknown signal combination");
         }
-
-        if (one != string.Empty && seven != string.Empty) {
-            segments[0] = seven.Except(one).ToString();
-        }
-
-        // if(seven != string.Empty && sixOrNine.Any()) {
-        //     nine = sixOrNine.SingleOrDefault(sn => sn.Contains(seven));
-        //     six = sixOrNine.SingleOrDefault(sn => !sn.Contains(seven));
-        // }
-
-        // if (one != string.Empty && twoThreeFive.Any()) {
-        //     three = twoThreeFive.SingleOrDefault(ttf => ttf.Contains(one));
-        // }
-
     }
+
+    six = zeroSixNine.Single(zsn => zsn.Intersect(one).Count() != one.Length);
+    zeroSixNine.Remove(six);
+
+    three = twoThreeFive.Single(ttf => ttf.Intersect(one).Count() == one.Length);
+    twoThreeFive.Remove(three);
+
+    nine = zeroSixNine.Single(zsn => zsn.Intersect(three).Count() == three.Length);
+    zeroSixNine.Remove(nine);
+
+    zero = zeroSixNine.Single();
+
+    if (twoThreeFive[0].Intersect(four).Count() == 2) {
+        two = twoThreeFive[0];
+        five = twoThreeFive[1];
+    } else {
+        two = twoThreeFive[1];
+        five = twoThreeFive[0];
+    }
+
+    var map = new List<string> { zero, one, two, three, four, five, six, seven, eight, nine };
+
+    var value = 0;
+    for (var i = 0; i < 4; i++) {
+        var number = string.Concat(row.results[i].OrderBy(c => c));
+        value += (int)Math.Pow(10, 3 - i) * map.IndexOf(number);
+    }
+
+    sum += value;
 }
+Console.WriteLine($"Sum of ouput values {sum}");
 
 
 Data[] ParseInput(string[] input) {

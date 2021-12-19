@@ -15,16 +15,16 @@ namespace Day15
             this.vertices = vertices.ToDictionary(v => v.Id, v => v);
         }
 
+        // A* algorithm
         public (int lenght, List<T> path) FindShortestPath(T start, T end, Func<T,T,int> calculateHeuristicDistance) {
             var workData = SetupWorkData(start, end, calculateHeuristicDistance);
-            var workQueue = new Dictionary<T, WorkVertex> {{start, workData.Single(v => v.Id.Equals(start)) }};
+            var workQueue = new Dictionary<T, WorkVertex> {{start, workData[start] }};
             while (true) {
                 if (logInterval.HasValue && visitedNodes % logInterval == 0) Console.WriteLine($"Visited {visitedNodes} nodes");
-                //var current = workQueue.Values.Where(v => v.Visited == false && v.Cost != int.MaxValue).OrderBy(v => v.Cost).First();
                 var current = workQueue.Values.OrderBy(v => v.Cost).First();
                 if (current.Id.Equals(end)) break;
                 foreach (var (cost, neighbour) in vertices[current.Id].Neighbours) {
-                    var work = workData.Single(w => w.Id.Equals(neighbour));
+                    var work = workData[neighbour];
                     if (work.Visited) continue;
                     if (work.PathLength == int.MaxValue || work.PathLength > current.PathLength + cost) {
                         work.PathLength = current.PathLength + cost;
@@ -39,7 +39,7 @@ namespace Day15
             }
 
             var path = new List<T>();
-            var c = workData.Single(w => w.Id.Equals(end));
+            var c = workData[end];
             var length = c.PathLength;
             while (!c.Id.Equals(start)) {
                 path.Add(c.Id);
@@ -52,12 +52,12 @@ namespace Day15
             return (length, path);
         }
 
-        private IList<WorkVertex> SetupWorkData(T start, T end, Func<T, T, int> calculateHeuristicDistance) {
-            var result = vertices.Keys.Select(id => new WorkVertex {
+        private IDictionary<T, WorkVertex> SetupWorkData(T start, T end, Func<T, T, int> calculateHeuristicDistance) {
+            var result = vertices.Keys.ToDictionary(id=>id, id => new WorkVertex {
                 Id = id,
                 HeuristicDistance = calculateHeuristicDistance(end, id)
-            }).ToList();
-            result.Single(v => v.Id.Equals(start)).PathLength = 0;
+            });
+            result[start].PathLength = 0;
             return result;
         }
 

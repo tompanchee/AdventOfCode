@@ -18,6 +18,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Common\AOCCommon.csproj" />
 		<ProjectReference Include="..\Solutions\Day00\Day00.csproj" />
+		<ProjectReference Include="..\Solutions\Day01\Day01.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

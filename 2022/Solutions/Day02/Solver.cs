@@ -1,7 +1,7 @@
 ﻿using AOCCommon;
 using Serilog.Core;
 
-namespace Day01;
+namespace Day02;
 
 [Day(2, "Rock Paper Scissors")]
 public class Solver : SolverBase
@@ -12,7 +12,7 @@ public class Solver : SolverBase
 
     public override void Solve1()
     {
-        logger.Information("Playing gane...");
+        logger.Information("Playing game...");
 
         var totalPoints = 0;
         foreach(var (p1, p2) in guide)
@@ -25,7 +25,7 @@ public class Solver : SolverBase
 
     public override void Solve2()
     {
-        logger.Information("Playing gane...");
+        logger.Information("Playing game...");
 
         var totalPoints = 0;
         foreach (var (p1, p2) in guide)

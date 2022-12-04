@@ -30,19 +30,28 @@ internal sealed class App : Command<App.Options>
                 .AddChoices(solvers)
         );
 
+        Log.Information("Starting day {day}", solverCtx.Day);       
+        var sw = Stopwatch.StartNew();
+
         var solver = Activator.CreateInstance(solverCtx.Solver, settings.InputPath, Log.Logger) as ISolver;
 
+        Log.Information("---");
         Log.Information("Solving problem 1");
         var stopwatch = Stopwatch.StartNew();
         solver?.Solve1();
         stopwatch.Stop();
         Log.Information("Solved problem 1 in {0}ms", stopwatch.ElapsedMilliseconds);
 
+        Log.Information("---");
         Log.Information("Solving problem 2");
         stopwatch.Restart();
         solver?.Solve2();
         stopwatch.Stop();
         Log.Information("Solved problem 2 in {0}ms", stopwatch.ElapsedMilliseconds);
+
+        sw.Stop();
+        Log.Information("---");
+        Log.Information("Day {day} complete in total {elapsed} ms", solverCtx.Day, sw.ElapsedMilliseconds);
 
         return 0;
     }

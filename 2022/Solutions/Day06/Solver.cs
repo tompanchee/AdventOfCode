@@ -21,7 +21,7 @@ public class Solver : SolverBase
     {
         int startOfMessage = ResolveCharactersToReadToFindDistinctMarker(14);
 
-        logger.Information("Start of packet is found when {0} caharacters are read", startOfMessage);
+        logger.Information("Start of message is found when {0} caharacters are read", startOfMessage);
     }
 
     int ResolveCharactersToReadToFindDistinctMarker(int markerLength)

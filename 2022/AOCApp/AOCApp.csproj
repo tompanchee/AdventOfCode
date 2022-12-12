@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -29,6 +29,7 @@
 		<ProjectReference Include="..\Solutions\Day09\Day09.csproj" />
 		<ProjectReference Include="..\Solutions\Day10\Day10.csproj" />
 		<ProjectReference Include="..\Solutions\Day11\Day11.csproj" />
+		<ProjectReference Include="..\Solutions\Day12\Day12.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

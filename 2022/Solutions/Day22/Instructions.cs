@@ -3,7 +3,7 @@
 internal class Instructions
 {
     readonly string data;
-    int pos;
+    int pos = 0;
 
     public Instructions(string data) {
         this.data = data;
@@ -21,5 +21,10 @@ internal class Instructions
         pos += offset;
 
         return result;
+    }
+
+    public void Reset()
+    {
+        pos = 0;
     }
 }

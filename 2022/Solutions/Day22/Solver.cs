@@ -23,7 +23,18 @@ internal class Solver : SolverBase
         logger.Information("Password is {0}", walker.CalculatePassword());
     }
 
-    public override void Solve2() { }
+    public override void Solve2() {
+        logger.Information("Walking through the force field...");
+        instructions!.Reset();
+        (int row, int col) pos = (0, map[0].IndexOf('.'));
+
+        var walker = new Walker(pos, 'R', map, true);
+
+        string? instruction;
+        while ((instruction = instructions!.GetNext()) != null) walker.ExecuteInstruction(instruction);
+
+        logger.Information("Password is {0}", walker.CalculatePassword());
+    }
 
     protected override void PostConstruct() {
         logger.Information("Reading map...");

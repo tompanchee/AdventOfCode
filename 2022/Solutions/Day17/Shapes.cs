@@ -2,6 +2,8 @@
 
 internal static class Shapes
 {
+    public const int SHAPE_COUNT = 5;
+
     // Flip shapes horizontally to help with indexes, bottom index 0
 
     // ####

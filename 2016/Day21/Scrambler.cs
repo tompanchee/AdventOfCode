@@ -30,9 +30,7 @@ internal class Scrambler
                 continue;
             }
 
-            if (operation.StartsWith("move ")) {
-                scrambled = Move(scrambled, operation);
-            }
+            if (operation.StartsWith("move ")) scrambled = Move(scrambled, operation);
         }
 
         return scrambled;
@@ -63,19 +61,13 @@ internal class Scrambler
 
         var rotate = 0;
 
-        if (operation.Contains("right")) {
-            rotate = operation[13] - '0';
-        }
+        if (operation.Contains("right")) rotate = operation[13] - '0';
 
-        if (operation.Contains("left")) {
-            rotate = -(operation[12] - '0');
-        }
+        if (operation.Contains("left")) rotate = -(operation[12] - '0');
 
         if (operation.Contains("based")) {
             rotate = scrambled.IndexOf(operation[35]) + 1;
-            if (rotate >= 4) {
-                rotate++;
-            }
+            if (rotate > 4) rotate++;
         }
 
         var l = scrambled.ToList();

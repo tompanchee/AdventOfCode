@@ -17,8 +17,9 @@ public class Assembunny
 
     public int A => registers['a'];
 
-    public void Execute() {
+    public void Execute(int? maxOutputLength = null) {
         var pc = 0;
+        Output = new List<int>();
 
         while (pc < program.Length) {
             var operation = program[pc];
@@ -53,10 +54,17 @@ public class Assembunny
                     Toggle(value);
                     pc++;
                     break;
+                case "out":
+                    arg = operation[3..].Trim();
+                    Output.Add(GetArgumentValue(arg));
+                    pc++;
+                    break;
 
                 default:
                     throw new InvalidOperationException(operation[..3]);
             }
+
+            if (maxOutputLength.HasValue && Output.Count >= maxOutputLength.Value) break;
         }
 
         void Toggle(int offset) {
@@ -86,4 +94,6 @@ public class Assembunny
     public void SetC(int value) {
         registers['c'] = value;
     }
+
+    public List<int>? Output { get; private set; }
 }

@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotHash", "KnotHash\KnotHa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day14", "Day14\Day14.csproj", "{514C7070-869C-4DC7-8E22-553848782632}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day15", "Day15\Day15.csproj", "{C547091D-E367-43D0-9DDD-805F6A8585E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +243,18 @@ Global
 		{514C7070-869C-4DC7-8E22-553848782632}.Release|x64.Build.0 = Release|Any CPU
 		{514C7070-869C-4DC7-8E22-553848782632}.Release|x86.ActiveCfg = Release|Any CPU
 		{514C7070-869C-4DC7-8E22-553848782632}.Release|x86.Build.0 = Release|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Debug|x64.Build.0 = Debug|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Debug|x86.Build.0 = Debug|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Release|x64.ActiveCfg = Release|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Release|x64.Build.0 = Release|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{C547091D-E367-43D0-9DDD-805F6A8585E6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

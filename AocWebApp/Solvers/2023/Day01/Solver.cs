@@ -4,7 +4,7 @@ using Serilog;
 
 namespace Day01;
 
-[Day(2023, 1, "")]
+[Day(2023, 1, "Trebuchet?!")]
 internal class Solver : SolverBase
 {
     static readonly (string word, string digit)[] Numbers =

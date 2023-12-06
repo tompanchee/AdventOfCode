@@ -3,6 +3,7 @@ using App.Models;
 using Common;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Serilog.Events;
 
 namespace App.Controllers;
 
@@ -10,7 +11,7 @@ namespace App.Controllers;
 [Route("[controller]")]
 public class AocController : ControllerBase
 {
-    readonly SolverRepository solverRepository;
+    private readonly SolverRepository solverRepository;
 
     public AocController(SolverRepository solverRepository)
     {
@@ -29,11 +30,12 @@ public class AocController : ControllerBase
     [Produces("text/plain")]
     public async Task<IActionResult> ExecuteSolver(int year, int day, [FromBody] string input, [FromHeader] bool debug = false)
     {
-        using var writer = new StringWriter();
+        await using var writer = new StringWriter();
 
-        using var logger = new LoggerConfiguration()
-            .MinimumLevel.Is(debug ? Serilog.Events.LogEventLevel.Debug : Serilog.Events.LogEventLevel.Information)
+        await using var logger = new LoggerConfiguration()
+            .MinimumLevel.Is(debug ? LogEventLevel.Debug : LogEventLevel.Information)
             .WriteTo.TextWriter(writer)
+            .WriteTo.Console()
             .CreateLogger();
 
         var solverModel = solverRepository.Solvers.SingleOrDefault(s => s.Solver.Year == year && s.Solver.Day == day);

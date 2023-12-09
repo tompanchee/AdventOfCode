@@ -40,7 +40,11 @@ public class AocController : ControllerBase
 
         var solverModel = solverRepository.Solvers.SingleOrDefault(s => s.Solver.Year == year && s.Solver.Day == day);
         if (solverModel == null) return new BadRequestObjectResult($"No solver found for {year}-{day}");
+        logger.Information("Advent of Code {year}-{day} - {description}", year, day, solverModel.Solver.Description);
+
         var solver = Activator.CreateInstance(solverModel.Type, input, logger) as ISolver;
+
+        logger.Information("---");
 
         logger.Information("Solving problem 1...");
         var sw = Stopwatch.StartNew();

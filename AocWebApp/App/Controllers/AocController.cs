@@ -42,6 +42,7 @@ public class AocController : ControllerBase
         if (solverModel == null) return new BadRequestObjectResult($"No solver found for {year}-{day}");
         logger.Information("Advent of Code {year}-{day} - {description}", year, day, solverModel.Solver.Description);
 
+        var totalTimeSw = Stopwatch.StartNew();
         var solver = Activator.CreateInstance(solverModel.Type, input, logger) as ISolver;
 
         logger.Information("---");
@@ -58,6 +59,9 @@ public class AocController : ControllerBase
         await solver!.Solve2();
         sw.Stop();
         logger.Information($"Problem 2 solved in {sw.ElapsedMilliseconds}ms");
+
+        totalTimeSw.Stop();
+        logger.Information("Solved both problems in totally {total} ms", totalTimeSw.ElapsedMilliseconds);
 
         return new OkObjectResult(writer.ToString());
     }

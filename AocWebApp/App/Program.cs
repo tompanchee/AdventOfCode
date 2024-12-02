@@ -17,7 +17,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+        {
+            options.EnableTryItOutByDefault();
+            options.InjectStylesheet("/assets/css/aoc.css");
+        });
 }
 
 app.UseHttpsRedirection();
@@ -25,5 +29,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 app.Run();

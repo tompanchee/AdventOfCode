@@ -38,6 +38,7 @@
         <ProjectReference Include="..\Solvers\2024\Y24-Day05\Y24-Day05.csproj" />
         <ProjectReference Include="..\Solvers\2024\Y24-Day06\Y24-Day06.csproj" />
         <ProjectReference Include="..\Solvers\2024\Y24-Day07\Y24-Day07.csproj" />
+        <ProjectReference Include="..\Solvers\2024\Y24-Day08\Y24-Day08.csproj" />
     </ItemGroup>
 
 </Project>

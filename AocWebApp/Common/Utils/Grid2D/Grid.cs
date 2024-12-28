@@ -27,17 +27,24 @@ public class Grid : IEnumerable<(Point point, char value)>
 
     public string[] Rows { get; }
 
-    public IEnumerator<(Point point, char value)> GetEnumerator() => new Enumerator(this);
+    public IEnumerator<(Point point, char value)> GetEnumerator()
+    {
+        return new Enumerator(this);
+    }
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
     private class Enumerator : IEnumerator<(Point point, char value)>
     {
         private int x = -1;
         private int y;
         private readonly Grid grid1;
-        
-        public Enumerator(Grid grid) {
+
+        public Enumerator(Grid grid)
+        {
             grid1 = grid;
         }
 
@@ -65,5 +72,36 @@ public class Grid : IEnumerable<(Point point, char value)>
             x = -1;
             y = 0;
         }
+    }
+
+    public Point[] GetNeighbours(Point head)
+    {
+        List<Point> neighbours = new List<Point>();
+
+        Point n = head.Move(Orientation.North);
+        if (Contains(n))
+        {
+            neighbours.Add(n);
+        }
+
+        n = head.Move(Orientation.East);
+        if (Contains(n))
+        {
+            neighbours.Add(n);
+        }
+
+        n = head.Move(Orientation.South);
+        if (Contains(n))
+        {
+            neighbours.Add(n);
+        }
+
+        n = head.Move(Orientation.West);
+        if (Contains(n))
+        {
+            neighbours.Add(n);
+        }
+
+        return neighbours.ToArray();
     }
 }

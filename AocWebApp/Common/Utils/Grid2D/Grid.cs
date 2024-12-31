@@ -9,8 +9,8 @@ public class Grid : IEnumerable<(Point point, char value)>
         Rows = rows;
     }
 
-    private int MaxX => Rows.Length;
-    private int MaxY => Rows[0].Length;
+    private int MaxX => Rows[0].Length;
+    private int MaxY => Rows.Length;
 
     public char this[int x, int y] => Rows[y][x];
     public char this[Point point] => this[point.X, point.Y];
@@ -74,30 +74,30 @@ public class Grid : IEnumerable<(Point point, char value)>
         }
     }
 
-    public Point[] GetNeighbours(Point head)
+    public Point[] GetNeighbours(Point head, bool allowOverFlow = false)
     {
         List<Point> neighbours = new List<Point>();
 
         Point n = head.Move(Orientation.North);
-        if (Contains(n))
+        if (allowOverFlow || Contains(n))
         {
             neighbours.Add(n);
         }
 
         n = head.Move(Orientation.East);
-        if (Contains(n))
+        if (allowOverFlow || Contains(n))
         {
             neighbours.Add(n);
         }
 
         n = head.Move(Orientation.South);
-        if (Contains(n))
+        if (allowOverFlow || Contains(n))
         {
             neighbours.Add(n);
         }
 
         n = head.Move(Orientation.West);
-        if (Contains(n))
+        if (allowOverFlow || Contains(n))
         {
             neighbours.Add(n);
         }

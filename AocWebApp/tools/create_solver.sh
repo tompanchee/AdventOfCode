@@ -8,7 +8,7 @@ fi
 
 YEAR=$1
 DAY=$2
-DAY_PADDED=$(printf "%02d" $DAY)
+DAY_PADDED=$(printf "%02d" "$DAY")
 
 # --- Configuration ---
 SOLUTION_FILE="AocWebApp.sln"
@@ -19,6 +19,7 @@ COMMON_PROJ_PATH="../../../Common/Common.csproj"
 PROJ_NAME="Y${YEAR:2}-Day${DAY_PADDED}"
 PROJ_DIR="${SOLVERS_DIR}/${YEAR}/${PROJ_NAME}"
 PROJ_FILE="${PROJ_DIR}/${PROJ_NAME}.csproj"
+PROJ_NAMESPACE="Y${YEAR:2}_Day${DAY_PADDED}"
 
 mkdir -p "${PROJ_DIR}"
 dotnet new classlib -n "${PROJ_NAME}" -o "${PROJ_DIR}" --force
@@ -32,19 +33,15 @@ dotnet sln "${SOLUTION_FILE}" add "${PROJ_FILE}"
 # --- Create Solver.cs ---
 SOLVER_FILE="${PROJ_DIR}/Solver.cs"
 cat > "${SOLVER_FILE}" << EOL
+using Common.Solver;
 using Common;
 using Serilog;
-using System.Threading.Tasks;
 
-namespace ${PROJ_NAME};
+namespace ${PROJ_NAMESPACE};
 
 [Day(20${YEAR:2}, ${DAY}, "New Solver")]
-public class Solver : SolverBase
+public class Solver(string input, ILogger logger) : SolverBase(input, logger)
 {
-    public Solver(string input, ILogger logger) : base(input, logger)
-    {
-    }
-
     public override Task Solve1()
     {
         logger.Information("Solving part 1...");

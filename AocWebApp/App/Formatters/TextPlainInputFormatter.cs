@@ -1,31 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
-using System.Text;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace App.Formatters
+namespace App.Formatters;
+
+public class TextPlainInputFormatter : TextInputFormatter
 {
-    public class TextPlainInputFormatter : TextInputFormatter
+    public TextPlainInputFormatter()
     {
-        public TextPlainInputFormatter()
+        SupportedMediaTypes.Add("text/plain");
+        SupportedEncodings.Add(UTF8EncodingWithoutBOM);
+        SupportedEncodings.Add(UTF16EncodingLittleEndian);
+    }
+
+    protected override bool CanReadType(Type type)
+    {
+        return type == typeof(string);
+    }
+
+    public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
+        Encoding encoding)
+    {
+        string? data = null;
+        using (TextReader streamReader = context.ReaderFactory(context.HttpContext.Request.Body, encoding))
         {
-            SupportedMediaTypes.Add("text/plain");
-            SupportedEncodings.Add(UTF8EncodingWithoutBOM);
-            SupportedEncodings.Add(UTF16EncodingLittleEndian);
+            data = await streamReader.ReadToEndAsync();
         }
 
-        protected override bool CanReadType(Type type)
-        {
-            return type == typeof(string);
-        }
-
-        public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
-        {
-            string? data = null;
-            using (var streamReader = context.ReaderFactory(context.HttpContext.Request.Body, encoding))
-            {
-                data = await streamReader.ReadToEndAsync();
-            }
-
-            return InputFormatterResult.Success(data);
-        }
+        return InputFormatterResult.Success(data);
     }
 }

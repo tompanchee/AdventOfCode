@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text;
 
 namespace Common.Utils.Grid2D;
 
@@ -26,6 +27,16 @@ public class Grid : IEnumerable<(Point point, char value)>
     }
 
     public string[] Rows { get; }
+
+    public void SetPoint(Point point, char value)
+    {
+        var row = Rows[point.Y];
+        var sb = new StringBuilder();
+        sb.Append(row[..point.X]);
+        sb.Append(value);
+        sb.Append(row[(point.X + 1)..]);
+        Rows[point.Y] = sb.ToString();
+    }
 
     public IEnumerator<(Point point, char value)> GetEnumerator()
     {
@@ -74,7 +85,7 @@ public class Grid : IEnumerable<(Point point, char value)>
         }
     }
 
-    public Point[] GetNeighbours(Point head, bool allowOverFlow = false)
+    public Point[] GetNeighbours(Point head, bool allowOverFlow = false, bool allowInterCardinal = false)
     {
         List<Point> neighbours = new List<Point>();
 
@@ -100,6 +111,33 @@ public class Grid : IEnumerable<(Point point, char value)>
         if (allowOverFlow || Contains(n))
         {
             neighbours.Add(n);
+        }
+
+        if (allowInterCardinal)
+        {
+            n = head.Move(Orientation.North).Move(Orientation.West);
+            if (allowOverFlow || Contains(n))
+            {
+                neighbours.Add(n);
+            }
+            
+            n = head.Move(Orientation.North).Move(Orientation.East);
+            if (allowOverFlow || Contains(n))
+            {
+                neighbours.Add(n);
+            }
+            
+            n = head.Move(Orientation.South).Move(Orientation.West);
+            if (allowOverFlow || Contains(n))
+            {
+                neighbours.Add(n);
+            }
+            
+            n = head.Move(Orientation.South).Move(Orientation.East);
+            if (allowOverFlow || Contains(n))
+            {
+                neighbours.Add(n);
+            }
         }
 
         return neighbours.ToArray();

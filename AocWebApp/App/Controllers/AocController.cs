@@ -3,6 +3,7 @@ using App.Models;
 using Common;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Serilog.Core;
 using Serilog.Events;
 
 namespace App.Controllers;
@@ -28,27 +29,33 @@ public class AocController : ControllerBase
     [HttpPost("{year}/{day}")]
     [Consumes("text/plain")]
     [Produces("text/plain")]
-    public async Task<IActionResult> ExecuteSolver(int year, int day, [FromBody] string input, [FromHeader] bool debug = false)
+    public async Task<IActionResult> ExecuteSolver(int year, int day, [FromBody] string input,
+        [FromHeader] bool debug = false)
     {
-        await using var writer = new StringWriter();
+        await using StringWriter writer = new();
 
-        await using var logger = new LoggerConfiguration()
+        await using Logger logger = new LoggerConfiguration()
             .MinimumLevel.Is(debug ? LogEventLevel.Debug : LogEventLevel.Information)
             .WriteTo.TextWriter(writer)
             .WriteTo.Console()
             .CreateLogger();
 
-        var solverModel = solverRepository.Solvers.SingleOrDefault(s => s.Solver.Year == year && s.Solver.Day == day);
-        if (solverModel == null) return new BadRequestObjectResult($"No solver found for {year}-{day}");
+        SolverModel? solverModel =
+            solverRepository.Solvers.SingleOrDefault(s => s.Solver.Year == year && s.Solver.Day == day);
+        if (solverModel == null)
+        {
+            return new BadRequestObjectResult($"No solver found for {year}-{day}");
+        }
+
         logger.Information("Advent of Code {year}-{day} - {description}", year, day, solverModel.Solver.Description);
 
-        var totalTimeSw = Stopwatch.StartNew();
-        var solver = Activator.CreateInstance(solverModel.Type, input, logger) as ISolver;
+        Stopwatch totalTimeSw = Stopwatch.StartNew();
+        ISolver? solver = Activator.CreateInstance(solverModel.Type, input, logger) as ISolver;
 
         logger.Information("---");
 
         logger.Information("Solving problem 1...");
-        var sw = Stopwatch.StartNew();
+        Stopwatch sw = Stopwatch.StartNew();
         await solver!.Solve1();
         sw.Stop();
         logger.Information($"Problem 1 solved in {sw.ElapsedMilliseconds}ms");

@@ -50,6 +50,7 @@
         <ProjectReference Include="..\Solvers\2025\Y25-Day02\Y25-Day02.csproj"/>
         <ProjectReference Include="..\Solvers\2025\Y25-Day03\Y25-Day03.csproj"/>
         <ProjectReference Include="..\Solvers\2025\Y25-Day04\Y25-Day04.csproj"/>
+        <ProjectReference Include="..\Solvers\2025\Y25-Day05\Y25-Day05.csproj" />
     </ItemGroup>
 
 </Project>
